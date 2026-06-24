@@ -180,6 +180,11 @@
   .pcard-front{background:var(--grad-hero);}
   .pcard:nth-child(even) .pcard-front{background:var(--grad-cyan);}
   .pcard-back{background:var(--grad-accent);transform:rotateY(180deg);}
+  /* iOS Safari ignores backface-visibility on rounded 3D cards — also hide the
+     away-facing side with opacity, switched at the flip midpoint (~half of .65s). */
+  .pcard-face{transition:opacity 0s linear .33s;}
+  .pcard:not(.flipped) .pcard-back{opacity:0;}
+  .pcard.flipped .pcard-front{opacity:0;}
   .pcard .pnum,.pcard .bk-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);position:relative;z-index:1;}
   .pcard .pic{width:52px;height:52px;margin:6px 0 10px;color:#fff;position:relative;z-index:1;}
   .pcard .pic svg{width:52px;height:52px;}
@@ -223,6 +228,9 @@
   .flip-front .gone{font-size:11px;color:var(--muted);margin-top:4px;}
   .flip-front .gtap{font-size:10px;color:var(--gold);margin-top:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
   .flip-back{background:var(--grad-accent);color:#fff;transform:rotateY(180deg);}
+  .flip-face{transition:opacity 0s linear .28s;}
+  .flip:not(.flipped) .flip-back{opacity:0;}
+  .flip.flipped .flip-front{opacity:0;}
   .flip-back .bn{font-weight:800;font-size:13px;color:#fff;margin-bottom:6px;font-family:var(--ui);letter-spacing:.02em;}
   .flip-back ul{margin:0;padding-left:16px;}
   .flip-back li{font-size:11px;margin-bottom:5px;color:rgba(255,255,255,.95);}
