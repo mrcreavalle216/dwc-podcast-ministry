@@ -105,7 +105,9 @@
   .hero h1{font-size:26px;font-weight:800;margin:0 0 6px;line-height:1.1;max-width:74%;}
   .hero p{margin:0;font-size:13.5px;color:#d6deec;max-width:78%;}
   .hero .pill{display:inline-block;margin-top:14px;background:var(--grad-accent);color:#fff;font-weight:700;font-size:11px;
-    letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:30px;box-shadow:0 4px 14px rgba(232,134,42,.4);}
+    letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-radius:30px;box-shadow:0 4px 14px rgba(232,134,42,.4);
+    border:none;cursor:pointer;font-family:var(--ui);transition:transform .12s;}
+  .hero .pill:active{transform:scale(.96);}
 
   .verse-banner{background:#faf4e6;border:1px solid var(--gold-2);border-radius:16px;padding:14px 16px;margin-bottom:14px;
     font-size:14px;color:#6a5524;}
@@ -453,7 +455,7 @@
       <svg class="art" viewBox="0 0 160 160"><use href="#hero-art"/></svg>
       <h1>Welcome to the team</h1>
       <p>You don't need experience — just a teachable heart. Let's learn by doing.</p>
-      <span class="pill">Tap a tile to start ▾</span>
+      <button class="pill" data-go="learn">Start learning →</button>
     </div>
 
     <div class="verse-banner">"Go into all the world and proclaim the gospel." <b>— Mark 16:15</b></div>
