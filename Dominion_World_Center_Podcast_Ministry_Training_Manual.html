@@ -214,16 +214,15 @@
   .flip.flipped .flip-in{transform:rotateY(180deg);}
   .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;box-shadow:var(--shadow);
     padding:14px;display:flex;flex-direction:column;}
-  .flip-front{background:var(--card);align-items:center;justify-content:center;text-align:center;}
-  .flip-front .gart{width:70px;height:70px;color:var(--navy);margin-bottom:8px;}
-  body.dark .flip-front .gart{color:var(--gold-2);}
-  .flip-front .gn{font-weight:700;font-size:14px;line-height:1.15;}
+  .flip-front{background:var(--card);align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);}
+  .flip-front .gart{width:70px;height:70px;color:var(--gold);margin-bottom:8px;}
+  .flip-front .gn{font-weight:700;font-size:14px;line-height:1.15;color:var(--ink);}
   .flip-front .gone{font-size:11px;color:var(--muted);margin-top:4px;}
-  .flip-front .gtap{font-size:10px;color:var(--gold);margin-top:8px;font-weight:700;letter-spacing:.05em;}
-  .flip-back{background:var(--navy);color:#fff;transform:rotateY(180deg);overflow:auto;}
-  .flip-back .bn{font-weight:700;font-size:13px;color:var(--gold-2);margin-bottom:6px;}
+  .flip-front .gtap{font-size:10px;color:var(--gold);margin-top:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+  .flip-back{background:var(--grad-accent);color:#fff;transform:rotateY(180deg);overflow:auto;}
+  .flip-back .bn{font-weight:800;font-size:13px;color:#fff;margin-bottom:6px;font-family:var(--ui);letter-spacing:.02em;}
   .flip-back ul{margin:0;padding-left:16px;}
-  .flip-back li{font-size:11px;margin-bottom:5px;color:#dce3ef;}
+  .flip-back li{font-size:11px;margin-bottom:5px;color:rgba(255,255,255,.95);}
 
   /* ---------- Role chips + checklist ---------- */
   .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;-webkit-overflow-scrolling:touch;}
