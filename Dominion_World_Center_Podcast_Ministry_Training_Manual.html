@@ -169,12 +169,11 @@
   .carousel::-webkit-scrollbar{display:none;}
   /* 3D flip-card principles — whole card rotates, back has a contrasting color */
   .pcard{flex:0 0 80%;scroll-snap-align:center;height:250px;cursor:pointer;perspective:1300px;position:relative;}
-  .pcard-in{position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.45,.05,.25,1);transform-style:preserve-3d;}
+  .pcard-in{position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.45,.05,.25,1);
+    -webkit-transform-style:preserve-3d;transform-style:preserve-3d;will-change:transform;}
   .pcard.flipped .pcard-in{transform:rotateY(180deg);}
   .pcard-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;
-    border-radius:20px;padding:20px;color:#fff;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden;}
-  .pcard-face::after{content:"";position:absolute;right:-30px;bottom:-30px;width:130px;height:130px;border-radius:50%;
-    background:rgba(255,255,255,.07);}
+    border-radius:20px;padding:20px;color:#fff;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;}
   .pcard-front{background:var(--grad-hero);}
   .pcard:nth-child(even) .pcard-front{background:var(--grad-cyan);}
   .pcard-back{background:var(--grad-accent);transform:rotateY(180deg);}
@@ -210,16 +209,17 @@
   /* ---------- Flip cards (equipment) ---------- */
   .flip-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .flip{perspective:1000px;height:200px;cursor:pointer;}
-  .flip-in{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d;}
+  .flip-in{position:relative;width:100%;height:100%;transition:transform .55s;
+    -webkit-transform-style:preserve-3d;transform-style:preserve-3d;will-change:transform;}
   .flip.flipped .flip-in{transform:rotateY(180deg);}
-  .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;box-shadow:var(--shadow);
+  .flip-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:18px;box-shadow:var(--shadow);
     padding:14px;display:flex;flex-direction:column;}
   .flip-front{background:var(--card);align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);}
   .flip-front .gart{width:70px;height:70px;color:var(--gold);margin-bottom:8px;}
   .flip-front .gn{font-weight:700;font-size:14px;line-height:1.15;color:var(--ink);}
   .flip-front .gone{font-size:11px;color:var(--muted);margin-top:4px;}
   .flip-front .gtap{font-size:10px;color:var(--gold);margin-top:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
-  .flip-back{background:var(--grad-accent);color:#fff;transform:rotateY(180deg);overflow:auto;}
+  .flip-back{background:var(--grad-accent);color:#fff;transform:rotateY(180deg);}
   .flip-back .bn{font-weight:800;font-size:13px;color:#fff;margin-bottom:6px;font-family:var(--ui);letter-spacing:.02em;}
   .flip-back ul{margin:0;padding-left:16px;}
   .flip-back li{font-size:11px;margin-bottom:5px;color:rgba(255,255,255,.95);}
