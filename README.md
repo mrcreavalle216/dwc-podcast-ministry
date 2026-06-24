@@ -27,6 +27,27 @@ Sony FX30 · DJI Pocket 3 · RØDECaster Duo · 2× Shure SM7B · MacBook Air ·
 
 Open `Dominion_World_Center_Podcast_Ministry_Training_Manual.html` in any modern browser, or add it to a phone's home screen for an app-like launch. Progress is stored per-device in the browser, so each volunteer tracks their own.
 
+## Deploying to Vercel
+
+This is a zero-config static site. `index.html` is the entry point Vercel serves at the root URL; `vercel.json` adds clean URLs and basic security headers.
+
+**Option A — Vercel CLI (fastest):**
+
+```bash
+npm i -g vercel        # one-time
+cd dwc-podcast-ministry
+vercel                 # follow prompts, then:
+vercel --prod          # promote to production
+```
+
+**Option B — GitHub + Vercel dashboard:**
+
+1. Push this repo to GitHub.
+2. In the Vercel dashboard, "Add New… → Project" and import the repo.
+3. Framework preset: **Other**. Build command: none. Output dir: `.` (root). Deploy.
+
+Either way the app is live at `https://<your-project>.vercel.app`.
+
 ## Notes
 
 - The HTML file is the single source of truth.
