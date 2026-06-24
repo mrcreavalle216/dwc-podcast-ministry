@@ -962,7 +962,7 @@
      Leave them blank and the app runs exactly as before (local only).        */
   var SUPABASE_URL      = "https://ozvflddrqiyfbgigmaib.supabase.co";
   var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96dmZsZGRycWl5ZmJnaWdtYWliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMzA1NzAsImV4cCI6MjA5NzkwNjU3MH0.1IWcMzL0Mb88GW_heKmtdgEzqyyXvG3_wXMOcQWg-Pw";
-  var ENABLE_GOOGLE     = false;  // set true AFTER enabling Google in Supabase
+  var ENABLE_GOOGLE     = true;   // Google button shown; works once enabled in Supabase
 
   var authMode = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
   var sb=null, currentUser=null, pushTimer=null;
@@ -986,7 +986,9 @@
         .then(function(r){ authMsg(r.error?("Error: "+r.error.message):"Check your inbox for the sign-in link ✉️", r.error?"err":"ok"); });
     });
     document.getElementById("googleBtn").addEventListener("click",function(){
-      sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.href.split("#")[0]}});
+      authMsg("Opening Google…");
+      sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.href.split("#")[0]}})
+        .then(function(r){ if(r&&r.error) authMsg("Google sign-in isn't enabled yet — use the email link for now.","err"); });
     });
     document.getElementById("signOutBtn").addEventListener("click",function(){
       sb.auth.signOut().then(function(){ currentUser=null; showGate(true); toast("Signed out"); });
