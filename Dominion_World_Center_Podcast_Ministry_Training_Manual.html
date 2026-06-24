@@ -167,21 +167,25 @@
   .swipe-hint{font-size:12px;color:var(--muted);text-align:center;margin:-2px 0 8px;}
   .carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;-webkit-overflow-scrolling:touch;}
   .carousel::-webkit-scrollbar{display:none;}
-  .pcard{flex:0 0 78%;scroll-snap-align:center;border-radius:20px;padding:20px;color:#fff;
-    background:var(--grad-hero);box-shadow:var(--shadow-lg);min-height:215px;
-    display:flex;flex-direction:column;cursor:pointer;position:relative;}
-  .pcard:nth-child(4n+2){background:var(--grad-accent);}
-  .pcard:nth-child(4n+3){background:var(--grad-cyan);}
-  .pcard:nth-child(4n+4){background:linear-gradient(155deg,#1A5C5E,#0A0F1A);}
-  .pcard .pnum{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);}
-  .pcard .pic{width:54px;height:54px;margin:6px 0 10px;color:#fff;}
-  .pcard .pic svg{width:54px;height:54px;}
-  .pcard h4{margin:0 0 6px;font-size:19px;font-weight:800;}
-  .pcard .pone{font-size:13.5px;color:#e7ecf5;flex:1;}
-  .pcard .ptap{font-size:11px;color:rgba(255,255,255,.92);margin-top:8px;font-weight:700;letter-spacing:.04em;}
-  .pcard .pdetail{display:none;font-size:13px;color:#eef2f8;}
-  .pcard.flipped .pone,.pcard.flipped .ptap{display:none;}
-  .pcard.flipped .pdetail{display:block;}
+  /* 3D flip-card principles — whole card rotates, back has a contrasting color */
+  .pcard{flex:0 0 80%;scroll-snap-align:center;height:250px;cursor:pointer;perspective:1300px;position:relative;}
+  .pcard-in{position:relative;width:100%;height:100%;transition:transform .65s cubic-bezier(.45,.05,.25,1);transform-style:preserve-3d;}
+  .pcard.flipped .pcard-in{transform:rotateY(180deg);}
+  .pcard-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+    border-radius:20px;padding:20px;color:#fff;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden;}
+  .pcard-face::after{content:"";position:absolute;right:-30px;bottom:-30px;width:130px;height:130px;border-radius:50%;
+    background:rgba(255,255,255,.07);}
+  .pcard-front{background:var(--grad-hero);}
+  .pcard:nth-child(even) .pcard-front{background:var(--grad-cyan);}
+  .pcard-back{background:var(--grad-accent);transform:rotateY(180deg);}
+  .pcard .pnum,.pcard .bk-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);position:relative;z-index:1;}
+  .pcard .pic{width:52px;height:52px;margin:6px 0 10px;color:#fff;position:relative;z-index:1;}
+  .pcard .pic svg{width:52px;height:52px;}
+  .pcard h4{margin:0 0 6px;font-size:19px;font-weight:800;position:relative;z-index:1;}
+  .pcard .pone,.pcard .pdetail{font-size:13.5px;color:#f1f5fb;flex:1;position:relative;z-index:1;}
+  .pcard .pdetail{font-size:14px;line-height:1.5;}
+  .pcard .ptap{font-size:11px;color:rgba(255,255,255,.92);margin-top:8px;font-weight:700;letter-spacing:.04em;position:relative;z-index:1;}
+  .pcard-back .ptap{margin-top:auto;}
 
   /* ---------- Role cards ---------- */
   .rolecard{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:16px;box-shadow:var(--shadow);
@@ -712,9 +716,12 @@
   var pc=$("#principleCarousel");
   principles.forEach(function(p,i){
     var c=document.createElement("div");c.className="pcard";
-    c.innerHTML='<div class="pnum">PRINCIPLE '+(i+1)+'</div><div class="pic"><svg><use href="#'+p.ic+'"/></svg></div>'+
-      '<h4>'+p.t+'</h4><div class="pone">'+p.one+'</div><div class="ptap">Tap to learn more →</div>'+
-      '<div class="pdetail">'+p.d+'</div>';
+    c.innerHTML='<div class="pcard-in">'+
+      '<div class="pcard-face pcard-front"><div class="pnum">PRINCIPLE '+(i+1)+'</div><div class="pic"><svg><use href="#'+p.ic+'"/></svg></div>'+
+        '<h4>'+p.t+'</h4><div class="pone">'+p.one+'</div><div class="ptap">Tap to flip →</div></div>'+
+      '<div class="pcard-face pcard-back"><div class="bk-label">Principle '+(i+1)+' · why it matters</div>'+
+        '<h4>'+p.t+'</h4><div class="pdetail">'+p.d+'</div><div class="ptap">↩ Tap to flip back</div></div>'+
+      '</div>';
     c.addEventListener("click",function(){c.classList.toggle("flipped");});
     pc.appendChild(c);
   });
