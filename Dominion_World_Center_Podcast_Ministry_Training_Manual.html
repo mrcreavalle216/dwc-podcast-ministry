@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <title>DWC Podcast Ministry — Training App</title>
 <style>
   :root{
@@ -303,6 +304,41 @@
     transition:.3s;z-index:80;max-width:90%;text-align:center;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+  /* ---------- Auth gate ---------- */
+  .authgate{position:fixed;inset:0;z-index:1000;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;padding:24px;}
+  .authcard{background:var(--card);border-radius:24px;box-shadow:var(--shadow-lg);padding:32px 24px;max-width:380px;width:100%;text-align:center;}
+  .authlogo{width:64px;height:64px;margin:0 auto 14px;display:block;}
+  .authkick{font-family:var(--ui);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+  .authttl{font-family:var(--serif);font-size:24px;margin:6px 0 8px;color:var(--navy);}
+  body.dark .authttl{color:var(--gold-2);}
+  .authsub{font-size:14px;color:var(--muted);margin:0 0 18px;line-height:1.5;}
+  .authform{display:flex;flex-direction:column;gap:10px;}
+  .authform input{padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-family:var(--ui);background:var(--soft);color:var(--ink);}
+  .authform input:focus{outline:none;border-color:var(--gold);}
+  .authbtn{padding:14px;border:none;border-radius:12px;background:var(--grad-accent);color:#fff;font-family:var(--ui);font-weight:800;
+    font-size:14px;letter-spacing:.03em;cursor:pointer;text-transform:uppercase;box-shadow:0 6px 18px rgba(232,134,42,.35);}
+  .authbtn:active{transform:scale(.98);}
+  .authbtn.google{background:#fff;color:#1f2530;border:1.5px solid var(--line);box-shadow:none;margin-top:10px;text-transform:none;font-weight:700;}
+  body.dark .authbtn.google{background:#222c3c;color:#e8edf5;}
+  .authmsg{font-size:13px;margin:0 0 12px;font-family:var(--ui);}
+  .authmsg.ok{color:var(--green);} .authmsg.err{color:var(--red);}
+  .authfine{font-size:11.5px;color:var(--muted);margin:14px 0 0;}
+
+  /* ---------- Leaders dashboard ---------- */
+  .tabbar-inner.has-leaders{grid-template-columns:repeat(6,1fr);}
+  .lead-summary-row{display:flex;gap:12px;margin-bottom:16px;}
+  .lead-summary-row>div{flex:1;background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;text-align:center;}
+  .ls-num{font-family:var(--serif);font-size:28px;font-weight:800;color:var(--navy);}
+  body.dark .ls-num{color:var(--gold-2);}
+  .ls-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .lead-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:10px;}
+  .lead-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .lead-name{font-weight:700;font-size:15px;word-break:break-word;}
+  .lead-pct{font-family:var(--serif);font-weight:800;color:var(--gold);font-size:18px;flex:none;}
+  .lead-bar{height:8px;background:var(--line);border-radius:10px;overflow:hidden;margin:8px 0 6px;}
+  .lead-bar span{display:block;height:100%;background:var(--grad-accent);}
+  .lead-meta{font-size:11.5px;color:var(--muted);}
+
   @media print{
     .tabbar,.appbar .iconbtn,.swipe-hint,.markbtn,.drawbtn{display:none !important;}
     .screen{display:block !important;page-break-after:always;}
@@ -377,6 +413,23 @@
 
 <div class="app">
 
+  <!-- ===== AUTH GATE (only when login is enabled & signed out) ===== -->
+  <div class="authgate" id="authGate" style="display:none">
+    <div class="authcard">
+      <svg class="authlogo"><use href="#logo"/></svg>
+      <div class="authkick">Dominion World Center</div>
+      <h1 class="authttl">Podcast Ministry Training</h1>
+      <p class="authsub">Sign in to access your training and save your progress across devices.</p>
+      <div id="authMsg" class="authmsg"></div>
+      <form id="magicForm" class="authform">
+        <input id="authEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required>
+        <button type="submit" class="authbtn" id="magicBtn">Email me a sign-in link</button>
+      </form>
+      <button class="authbtn google" id="googleBtn" style="display:none">Continue with Google</button>
+      <p class="authfine">We'll email you a secure link — no password to remember.</p>
+    </div>
+  </div>
+
   <!-- ===== APP BAR ===== -->
   <div class="appbar">
     <svg class="logo"><use href="#logo"/></svg>
@@ -385,6 +438,7 @@
       <div class="ttl">Podcast Ministry</div>
     </div>
     <div class="spacer"></div>
+    <button class="iconbtn" id="signOutBtn" title="Sign out" style="display:none">⏻</button>
     <button class="iconbtn" id="darkBtn" title="Dark mode">🌙</button>
   </div>
 
@@ -597,6 +651,15 @@
     </div>
   </section>
 
+  <!-- ============ LEADERS DASHBOARD (leaders only) ============ -->
+  <section class="screen" id="screen-leaders">
+    <div class="screen-kicker">Leader view</div>
+    <h2 class="screen-ttl">Team Progress</h2>
+    <p class="lead">Completion across volunteers who have signed in. Updates as the team works through the app.</p>
+    <div id="leadersSummary" class="lead-summary"></div>
+    <div id="leadersList"></div>
+  </section>
+
   </main>
 
   <!-- ===== TAB BAR ===== -->
@@ -606,6 +669,7 @@
     <button class="tab" data-go="gear"><svg><use href="#ic-gear"/></svg><span>Gear</span><span class="tabdot"></span></button>
     <button class="tab" data-go="do"><svg><use href="#ic-do"/></svg><span>Session</span><span class="tabdot"></span></button>
     <button class="tab" data-go="quiz"><svg><use href="#ic-quiz"/></svg><span>Quiz</span><span class="tabdot"></span></button>
+    <button class="tab" data-go="leaders" id="leadersTab" style="display:none"><svg><use href="#s-roles"/></svg><span>Leaders</span><span class="tabdot"></span></button>
   </div></nav>
 
 </div>
@@ -619,7 +683,7 @@
   var $=function(s,c){return (c||document).querySelector(s);};
   var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
   function load(k){try{return JSON.parse(localStorage.getItem(k)||"null");}catch(e){return null;}}
-  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} if(window.__dwcOnSave)window.__dwcOnSave();}
 
   var toastEl=$("#toast");var toastT;
   function toast(msg){toastEl.textContent=msg;toastEl.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove("show");},1600);}
@@ -891,6 +955,107 @@
   /* ---------- Init ---------- */
   refreshLearn();renderChecklist();renderQuiz();drawRings();
   window.addEventListener("resize",drawRings);
+
+  /* ====================== LOGIN + CLOUD SYNC (optional) ======================
+     Paste your Supabase Project URL and anon public key below to switch on
+     accounts, the login gate, cloud progress sync, and the leader dashboard.
+     Leave them blank and the app runs exactly as before (local only).        */
+  var SUPABASE_URL      = "";     // e.g. https://abcd1234.supabase.co
+  var SUPABASE_ANON_KEY = "";     // the long "anon public" key
+  var ENABLE_GOOGLE     = false;  // set true AFTER enabling Google in Supabase
+
+  var authMode = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
+  var sb=null, currentUser=null, pushTimer=null;
+
+  function authMsg(t,k){var el=document.getElementById("authMsg");el.textContent=t||"";el.className="authmsg"+(k?(" "+k):"");}
+  function showGate(on){document.getElementById("authGate").style.display=on?"flex":"none";}
+
+  if(authMode){
+    sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    document.getElementById("signOutBtn").style.display="";
+    if(ENABLE_GOOGLE) document.getElementById("googleBtn").style.display="";
+
+    // push to cloud (debounced) whenever local progress changes
+    window.__dwcOnSave=function(){ if(!currentUser)return; clearTimeout(pushTimer); pushTimer=setTimeout(pushProgress,800); };
+
+    document.getElementById("magicForm").addEventListener("submit",function(e){
+      e.preventDefault();
+      var email=document.getElementById("authEmail").value.trim(); if(!email)return;
+      authMsg("Sending your link…");
+      sb.auth.signInWithOtp({email:email,options:{emailRedirectTo:location.href.split("#")[0]}})
+        .then(function(r){ authMsg(r.error?("Error: "+r.error.message):"Check your inbox for the sign-in link ✉️", r.error?"err":"ok"); });
+    });
+    document.getElementById("googleBtn").addEventListener("click",function(){
+      sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.href.split("#")[0]}});
+    });
+    document.getElementById("signOutBtn").addEventListener("click",function(){
+      sb.auth.signOut().then(function(){ currentUser=null; showGate(true); toast("Signed out"); });
+    });
+    document.getElementById("leadersTab").addEventListener("click",function(){ if(currentUser) loadLeaders(); });
+
+    sb.auth.getSession().then(function(r){ handleSession(r.data.session); });
+    sb.auth.onAuthStateChange(function(_e,session){ handleSession(session); });
+  }
+
+  function handleSession(session){
+    if(!session){ currentUser=null; showGate(true); return; }
+    currentUser=session.user; showGate(false);
+    pullProgress(); checkLeader();
+  }
+
+  function pullProgress(){
+    sb.from("profiles").select("learn,checks,quiz").eq("id",currentUser.id).maybeSingle()
+      .then(function(r){
+        var d=r.data||{};
+        if(d.learn && Object.keys(d.learn).length) learnDone=d.learn;
+        if(d.checks && Object.keys(d.checks).length) checks=d.checks;
+        if(d.quiz && Object.keys(d.quiz).length) quizState=d.quiz;
+        save(LS.learn,learnDone);save(LS.checks,checks);save(LS.quiz,quizState);
+        refreshLearn();renderChecklist();renderQuiz();drawRings();
+        pushProgress(); // persist row (and merge up any local-only progress)
+      });
+  }
+  function pushProgress(){
+    if(!currentUser)return;
+    sb.from("profiles").upsert({id:currentUser.id,email:currentUser.email,
+      learn:learnDone,checks:checks,quiz:quizState,updated_at:new Date().toISOString()}).then(function(){});
+  }
+  function checkLeader(){
+    sb.from("app_roles").select("role").eq("user_id",currentUser.id).maybeSingle()
+      .then(function(r){
+        var leader=!!(r.data && r.data.role==="leader");
+        document.getElementById("leadersTab").style.display=leader?"":"none";
+        document.querySelector(".tabbar-inner").classList.toggle("has-leaders",leader);
+        if(leader) loadLeaders();
+      });
+  }
+  function loadLeaders(){
+    sb.from("profiles").select("email,full_name,learn,checks,quiz,updated_at").order("updated_at",{ascending:false})
+      .then(function(r){ renderLeaders(r.data||[]); });
+  }
+  function renderLeaders(rows){
+    function p(a,b){return b?Math.round(a/b*100):0;}
+    var lt=$$(".acc[data-learn]").length, ct=0, qt=quizData.length;
+    roleNames.forEach(function(rn){["pre","prod","post"].forEach(function(ph){ct+=checklists[rn][ph].length;});});
+    var sum=document.getElementById("leadersSummary"), list=document.getElementById("leadersList");
+    if(!rows.length){ sum.innerHTML='<div class="card tight">No volunteers have signed in yet.</div>'; list.innerHTML=""; return; }
+    var total=0, html="";
+    rows.forEach(function(d){
+      var ld=d.learn?Object.values(d.learn).filter(Boolean).length:0;
+      var cd=d.checks?Object.values(d.checks).filter(Boolean).length:0;
+      var qAns=d.quiz?Object.keys(d.quiz).length:0;
+      var qOk=d.quiz?Object.values(d.quiz).filter(Boolean).length:0;
+      var overall=p(ld+cd+qAns, lt+ct+qt); total+=overall;
+      var when=d.updated_at?new Date(d.updated_at).toLocaleDateString():"—";
+      var who=(d.full_name||d.email||"Volunteer");
+      html+='<div class="lead-card"><div class="lead-top"><div class="lead-name">'+who+'</div><div class="lead-pct">'+overall+'%</div></div>'+
+        '<div class="lead-bar"><span style="width:'+overall+'%"></span></div>'+
+        '<div class="lead-meta">Lessons '+ld+'/'+lt+' · Checklist '+p(cd,ct)+'% · Quiz '+qOk+'/'+qt+' · '+when+'</div></div>';
+    });
+    sum.innerHTML='<div class="lead-summary-row"><div><div class="ls-num">'+rows.length+'</div><div class="ls-lbl">Volunteers</div></div>'+
+      '<div><div class="ls-num">'+Math.round(total/rows.length)+'%</div><div class="ls-lbl">Avg completion</div></div></div>';
+    list.innerHTML=html;
+  }
 })();
 </script>
 </body>

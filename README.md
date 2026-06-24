@@ -86,6 +86,14 @@ For an apex/root domain (`dominionwc.org`), Vercel will instead give you an
 **A record** to add. Since the church site already lives on that root domain,
 a subdomain like `podcast.` or `training.` is usually the cleaner choice.
 
+## Login & progress sync (optional)
+
+By default the app needs no login and stores each person's progress in their own
+browser. To add accounts, cloud sync across devices, and a leader dashboard of
+who's completed training, follow **[SUPABASE.md](SUPABASE.md)** — a ~15-minute,
+no-code setup using a free Supabase project (run `supabase-setup.sql`, paste two
+keys). Until configured, the app runs exactly as it does now.
+
 ## Notes
 
 - The HTML file is the single source of truth.
