@@ -1,8 +1,12 @@
 # Dominion World Center — Podcast Ministry Training App
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_GITHUB_USERNAME/dwc-podcast-ministry)
+
 A mobile-first, app-style training manual for the Dominion World Center Podcast Ministry volunteer team. Built as a single, self-contained HTML file that runs offline in any browser — no build step, no dependencies, no internet required.
 
 > **"People are the mission. The equipment is the tool."**
+
+> Replace `YOUR_GITHUB_USERNAME` above with your GitHub username once the repo is pushed (see "Push to GitHub" below). The badge then becomes a one-click "Deploy to Vercel" button.
 
 ## What it is
 
@@ -42,11 +46,45 @@ vercel --prod          # promote to production
 
 **Option B — GitHub + Vercel dashboard:**
 
-1. Push this repo to GitHub.
-2. In the Vercel dashboard, "Add New… → Project" and import the repo.
-3. Framework preset: **Other**. Build command: none. Output dir: `.` (root). Deploy.
+First push this repo to GitHub (see below), then in the Vercel dashboard choose
+"Add New… → Project", import the repo, set framework preset to **Other**
+(build command: none, output dir: `.`), and deploy. After this, every
+`git push` auto-deploys.
 
 Either way the app is live at `https://<your-project>.vercel.app`.
+
+### Push to GitHub
+
+Create an empty repo on GitHub named `dwc-podcast-ministry` (no README/license —
+this repo already has them), then from the extracted project folder:
+
+```bash
+cd dwc-podcast-ministry
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/dwc-podcast-ministry.git
+git branch -M main
+git push -u origin main
+```
+
+If you used the `.bundle` file instead, clone from it first:
+
+```bash
+git clone dwc-podcast-ministry.bundle dwc-podcast-ministry
+cd dwc-podcast-ministry
+git remote set-url origin https://github.com/YOUR_GITHUB_USERNAME/dwc-podcast-ministry.git
+git push -u origin main
+```
+
+### Custom domain
+
+1. In the Vercel project: **Settings → Domains → Add**, enter your domain
+   (e.g. `podcast.dominionwc.org`).
+2. Vercel shows a DNS record to add. For a subdomain, add a **CNAME** record at
+   your DNS provider pointing the subdomain to `cname.vercel-dns.com`.
+3. Wait for DNS to propagate; Vercel issues an HTTPS certificate automatically.
+
+For an apex/root domain (`dominionwc.org`), Vercel will instead give you an
+**A record** to add. Since the church site already lives on that root domain,
+a subdomain like `podcast.` or `training.` is usually the cleaner choice.
 
 ## Notes
 
