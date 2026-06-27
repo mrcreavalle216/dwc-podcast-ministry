@@ -666,7 +666,9 @@
         <div class="tipbox"><b>Host tips:</b> keep guests close to the mic, ask "say more about that," and let short silences breathe — they're not mistakes.</div>
 
         <h4>Add pressure (optional)</h4>
-        <p style="font-size:14px;margin-top:0;">Mid-record, have someone open the <b>Session</b> tab and tap <em>"Draw a surprise challenge"</em> to test how the team responds under pressure.</p>
+        <p style="font-size:14px;margin-top:0;">Mid-record, tap below to throw the team a curveball — practice staying calm and keeping the recording safe under pressure.</p>
+        <button class="drawbtn" id="drawBtn"><svg style="width:22px;height:22px"><use href="#dice"/></svg> Draw a surprise challenge</button>
+        <div class="drawn" id="drawnCard"></div>
 
         <h4>Debrief together</h4>
         <ul>
@@ -712,20 +714,9 @@
 
     <div id="checklistArea"></div>
 
-    <h3 style="margin-top:26px;">Team activity</h3>
-    <div class="activity">
-      <div class="meta">45-MIN HANDS-ON · "ADVICE TO YOUR YOUNGER SELF"</div>
-      <h3>Practice a real episode</h3>
-      <ol>
-        <li>Assign every role (5 min)</li>
-        <li>Plan 3–4 questions + run-of-show (10 min)</li>
-        <li>Setup, sound check &amp; <b>test record</b> (5 min)</li>
-        <li>Record a 7–8 min conversation (15 min)</li>
-        <li>Debrief: what went well? (10 min)</li>
-      </ol>
-      <p style="font-size:13px;color:#e6ecf6;">Mid-record, the facilitator throws a curveball. Tap below to draw one:</p>
-      <button class="drawbtn" id="drawBtn"><svg style="width:22px;height:22px" ><use href="#dice"/></svg> Draw a surprise challenge</button>
-      <div class="drawn" id="drawnCard"></div>
+    <div class="activity" style="margin-top:24px;">
+      <div class="meta">LEARN A NEW ROLE?</div>
+      <p style="margin:0;font-size:14px;color:#eef2f8;">Want to practice the whole flow as a team? Head to <b>Learn → "What Would I Tell My Younger Self?"</b> for the full 45-minute hands-on activity, per-role steps, and the surprise-challenge drill.</p>
     </div>
   </section>
 
@@ -990,6 +981,7 @@
     var s=surprises[Math.floor(Math.random()*surprises.length)];
     drawn.innerHTML='<div class="tag">⚡ Surprise challenge</div><div class="sc">'+s.sc+'</div><div class="tt">Tests: '+s.tt+'</div>';
     drawn.classList.add("show");drawn.style.animation="none";drawn.offsetHeight;drawn.style.animation="";
+    var b=drawn.closest(".acc-body"); if(b) b.style.maxHeight=b.scrollHeight+"px";
   });
 
   /* ---------- Practice activity: per-role step-by-step ---------- */
