@@ -361,6 +361,10 @@
 
   .acttag{display:inline-block;font-family:var(--ui);font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
     color:#fff;background:var(--grad-accent);padding:5px 12px;border-radius:30px;margin-bottom:8px;}
+  .rolesteps{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0 4px;}
+  .rolesteps .rs-title{font-family:var(--ui);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;font-size:12px;margin-bottom:8px;}
+  .rolesteps ol{margin:0;padding-left:20px;}
+  .rolesteps li{font-size:14px;margin-bottom:8px;}
 
   @media print{
     .tabbar,.appbar .iconbtn,.swipe-hint,.markbtn,.drawbtn{display:none !important;}
@@ -642,6 +646,13 @@
           <li><b>Record (12 min)</b> — Producer confirms <b>all</b> devices are recording, then says go. Host leads; keep it on time; stay calm if something breaks.</li>
           <li><b>Review &amp; debrief (8 min)</b> — watch the first minute back together and talk it through.</li>
         </ol>
+
+        <h4>Step-by-step for your role</h4>
+        <p style="font-size:13px;color:var(--muted);margin-top:0;">Brand new? Pick your role for exact, do-this-then-that steps.</p>
+        <select id="practiceRoleSelect" class="roleselect" aria-label="Choose your role for steps">
+          <option value="">Pick your role…</option>
+        </select>
+        <div id="practiceRoleSteps"></div>
 
         <h4>The questions</h4>
         <ul>
@@ -980,6 +991,75 @@
     drawn.innerHTML='<div class="tag">⚡ Surprise challenge</div><div class="sc">'+s.sc+'</div><div class="tt">Tests: '+s.tt+'</div>';
     drawn.classList.add("show");drawn.style.animation="none";drawn.offsetHeight;drawn.style.animation="";
   });
+
+  /* ---------- Practice activity: per-role step-by-step ---------- */
+  var practiceRoles=[
+    {r:"Producer",s:[
+      "Gather everyone and give each person a role from the list above.",
+      "Decide who is the Host and who is the Guest (1 or 2 guests).",
+      "Tell the team the plan: about 8 minutes of recording on the question topic.",
+      "Right before you start, ask out loud: “Audio ready? Camera ready? Are we recording?” Wait for a clear yes from each person.",
+      "Say “Recording in 3…2…1…” and point to the Host to begin.",
+      "Watch the clock. Around 7 minutes, quietly signal the Host to wrap up.",
+      "When it ends, ask “Did we get it?” BEFORE anyone stops recording.",
+      "Lead a short debrief: what went well, and one thing to improve."
+    ]},
+    {r:"Host",s:[
+      "Choose 3–4 of the interview questions in this activity.",
+      "Before recording, welcome your guest and chat for a minute so they relax.",
+      "Remind the guest to stay close to the mic and just talk normally.",
+      "When the Producer counts down, smile and give a warm intro: “Today we’re talking about what we’d tell our younger selves…”",
+      "Ask your first question, then listen — don’t rush to the next one.",
+      "Ask follow-ups like “say more about that” or “why did that matter?”",
+      "Glance at the Producer for the time signal.",
+      "Wrap up with a thank-you and one closing sentence."
+    ]},
+    {r:"Audio Engineer",s:[
+      "Turn on the RØDECaster Duo.",
+      "Plug one microphone into input 1 and the second mic into input 2 using the XLR cables.",
+      "Plug headphones into the RØDECaster and put them on.",
+      "Place each mic about a fist’s distance (3–4 inches) from the speaker’s mouth.",
+      "Ask each person to talk normally; watch the level bars bounce in the middle — never into the red.",
+      "On the MacBook in Ecamm, set the audio source to the RØDECaster (NOT the laptop mic).",
+      "Press record on the RØDECaster as a backup and tell the Producer “audio is recording.”",
+      "Keep your headphones on the whole time; if you hear buzzing or it’s too quiet, fix it between answers."
+    ]},
+    {r:"Camera Operator",s:[
+      "Put the camera on a tripod at about the speaker’s eye level.",
+      "Turn it on; check the battery is charged and the memory card has space.",
+      "Frame the shot: head and shoulders visible, with a little space above the head.",
+      "Make sure focus is on the person’s face, not the background.",
+      "Press record and confirm a red dot or timer is counting up — that means it’s really recording.",
+      "Tell the Producer “camera is recording.”",
+      "During the talk, glance at the shot now and then; nudge it if someone drifts out of frame.",
+      "Don’t stop recording until the Producer says you got it."
+    ]},
+    {r:"Guest",s:[
+      "Sit comfortably, close to the microphone (about a fist away).",
+      "Speak at a normal volume — no need to lean in or shout.",
+      "Answer honestly; there are no wrong answers.",
+      "It’s okay to pause and think before you answer.",
+      "If you stumble, just keep going — it can be fixed later.",
+      "Look at the Host (or the camera if asked), not at the screens.",
+      "Relax and have fun — this is practice."
+    ]},
+    {r:"Editor (after the session)",s:[
+      "Copy the recordings onto the MacBook right away, into a clearly named folder.",
+      "Make a second copy somewhere safe — always back it up.",
+      "Open the audio/video and trim the very start and end.",
+      "Listen through once and cut any big mistakes or long silences.",
+      "Keep it simple — even a clean, lightly-trimmed clip is a win for practice."
+    ]}
+  ];
+  var pSel=$("#practiceRoleSelect"), pSteps=$("#practiceRoleSteps");
+  if(pSel){
+    practiceRoles.forEach(function(x){var o=document.createElement("option");o.value=x.r;o.textContent=x.r;pSel.appendChild(o);});
+    pSel.addEventListener("change",function(){
+      var f=practiceRoles.filter(function(x){return x.r===pSel.value;})[0];
+      pSteps.innerHTML=f?'<div class="rolesteps"><div class="rs-title">'+f.r+' · do this</div><ol>'+f.s.map(function(t){return "<li>"+t+"</li>";}).join("")+'</ol></div>':"";
+      var b=pSteps.closest(".acc-body"); if(b) b.style.maxHeight=b.scrollHeight+"px";
+    });
+  }
 
   /* ---------- Quiz ---------- */
   var quizWrap=$("#quiz");var answered=[];var quizState=load(LS.quiz)||{};
