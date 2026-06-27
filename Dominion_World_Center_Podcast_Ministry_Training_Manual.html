@@ -369,6 +369,16 @@
   .vidrow .vn{font-weight:700;font-size:14px;}
   .vidrow .vd{font-size:12px;color:var(--muted);}
   .vidrow .vgo{color:var(--gold);font-size:12px;font-weight:700;flex:none;}
+  .vmodal{position:fixed;inset:0;z-index:1500;display:none;align-items:center;justify-content:center;padding:16px;}
+  .vmodal.open{display:flex;}
+  .vmodal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.8);}
+  .vmodal-box{position:relative;z-index:1;width:100%;max-width:700px;}
+  .vmodal-frame{position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;background:#000;box-shadow:var(--shadow-lg);}
+  .vmodal-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .vmodal-title{color:#fff;font-family:var(--ui);font-weight:700;font-size:14px;margin-top:12px;text-align:center;}
+  .vmodal-close{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);
+    color:#fff;border:none;font-size:15px;cursor:pointer;z-index:3;}
+  .vmodal-close:active{transform:scale(.92);}
   .rolesteps{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0 4px;}
   .rolesteps .rs-title{font-family:var(--ui);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;font-size:12px;margin-bottom:8px;}
   .rolesteps ol{margin:0;padding-left:20px;}
@@ -771,6 +781,16 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- ===== In-app video player ===== -->
+<div class="vmodal" id="videoModal" aria-hidden="true">
+  <div class="vmodal-backdrop" data-close></div>
+  <div class="vmodal-box">
+    <button class="vmodal-close" data-close aria-label="Close video">✕</button>
+    <div class="vmodal-frame"><iframe id="videoFrame" title="Tutorial video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+    <div class="vmodal-title" id="videoTitle"></div>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -915,11 +935,28 @@
   var extraVideos=[
     {n:"Lighting basics",one:"Light your space for clean, flattering video",video:"https://www.youtube.com/watch?v=G6W5wbPqzPw&list=PLgc0GNip2uYWgjNAY7jnMn9kswncd4fsJ"}
   ];
+  // In-app video player (embed so volunteers never leave the app)
+  var vModal=$("#videoModal"), vFrame=$("#videoFrame"), vTitle=$("#videoTitle");
+  function ytEmbed(url){
+    var v=(url.match(/[?&]v=([^&]+)/)||[])[1]||"";
+    var list=(url.match(/[?&]list=([^&]+)/)||[])[1];
+    var src="https://www.youtube-nocookie.com/embed/"+v+"?rel=0&playsinline=1&autoplay=1";
+    if(list) src+="&list="+list;
+    return src;
+  }
+  function openVideo(url,title){ if(!vModal)return; vFrame.src=ytEmbed(url); vTitle.textContent=title||""; vModal.classList.add("open"); vModal.setAttribute("aria-hidden","false"); }
+  function closeVideo(){ if(!vModal)return; vModal.classList.remove("open"); vModal.setAttribute("aria-hidden","true"); vFrame.src=""; }
+  if(vModal){
+    $$("[data-close]",vModal).forEach(function(el){el.addEventListener("click",closeVideo);});
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeVideo(); });
+  }
+
   var gv=$("#gearVideos");
   if(gv){
     gear.filter(function(g){return g.video;}).concat(extraVideos).forEach(function(g){
       var a=document.createElement("a");a.className="vidrow";a.href=g.video;a.target="_blank";a.rel="noopener";
-      a.innerHTML='<span class="vplay">▶</span><span class="vmeta"><span class="vn">'+g.n+'</span><span class="vd">'+g.one+' · video tutorial</span></span><span class="vgo">Watch ↗</span>';
+      a.innerHTML='<span class="vplay">▶</span><span class="vmeta"><span class="vn">'+g.n+'</span><span class="vd">'+g.one+' · video tutorial</span></span><span class="vgo">Watch ▶</span>';
+      a.addEventListener("click",function(e){ e.preventDefault(); openVideo(g.video, g.n); });
       gv.appendChild(a);
     });
   }
