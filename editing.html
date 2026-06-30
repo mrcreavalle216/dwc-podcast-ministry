@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DWC Podcast Ministry — CapCut Training</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:    #111827;
+    --navy2:   #1A2744;
+    --teal:    #1A5C5E;
+    --gold:    #E8862A;
+    --gold2:   #F4A85C;
+    --cyan:    #00B4D8;
+    --red:     #B71C34;
+    --ink:     #111827;
+    --muted:   #6B7280;
+    --bg:      #F3F4F6;
+    --card:    #FFFFFF;
+    --line:    #E5E7EB;
+    --soft:    #F8F9FA;
+    --green:   #16A34A;
+    --greenBg: #DCFCE7;
+    --purpleBg:#EDE9FE;
+    --purple:  #7C3AED;
+    --darkBg:  #0A0F1A;
+    --darkCard:#141B2A;
+    --darkLine:#28303F;
+    --r: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,.07);
+    --shadow-lg: 0 10px 36px rgba(0,0,0,.14);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: var(--bg); color: var(--ink);
+    line-height: 1.65; font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── App bar ─────────────────────────────────────────── */
+  .appbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy); padding: 0 24px;
+    height: 56px; display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  }
+  .appbar-logo { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex: none; }
+  .appbar-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .appbar-logo-fallback { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); display: grid; place-items: center; font-size: 16px; flex: none; }
+  .appbar-text { flex: 1; }
+  .appbar-org  { font-size: 12px; font-weight: 800; color: #fff; letter-spacing: .03em; }
+  .appbar-sub  { font-size: 10px; font-weight: 700; color: var(--gold2); letter-spacing: .08em; text-transform: uppercase; }
+  .mobile-toggle { display: none; background: transparent; border: none; color: #fff; font-size: 22px; cursor: pointer; margin-left: auto; padding: 4px; }
+
+  /* ── Side nav ─────────────────────────────────────────── */
+  .sidenav {
+    position: fixed; left: 0; top: 56px; bottom: 0; width: 218px;
+    background: var(--navy); overflow-y: auto; z-index: 80;
+    box-shadow: 2px 0 18px rgba(0,0,0,.18); transition: transform .28s ease;
+  }
+  .sidenav::-webkit-scrollbar { width: 4px; }
+  .sidenav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+  .nav-group { padding: 20px 0 4px; }
+  .nav-group-label { padding: 0 16px 6px; font-size: 9.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+  .nav-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; font-size: 12.5px; font-weight: 600;
+    color: rgba(255,255,255,.65); text-decoration: none;
+    border-left: 3px solid transparent; cursor: pointer;
+    transition: color .14s, background .14s, border-color .14s;
+  }
+  .nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+  .nav-link.active { color: var(--gold2); border-left-color: var(--gold); background: rgba(232,134,42,.1); }
+  .nav-icon { font-size: 13px; width: 16px; text-align: center; flex: none; }
+
+  /* ── Layout ───────────────────────────────────────────── */
+  .main { margin-left: 218px; padding: 32px 40px 80px; max-width: 980px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 79; }
+  .overlay.show { display: block; }
+
+  /* ── Screens ──────────────────────────────────────────── */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp .28s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* ── Typography helpers ───────────────────────────────── */
+  .kicker { font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .screen-title { font-size: 26px; font-weight: 800; color: var(--ink); margin-bottom: 6px; line-height: 1.2; }
+  .screen-sub   { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── Card ─────────────────────────────────────────────── */
+  .card { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); padding: 20px; }
+  .card + .card { margin-top: 12px; }
+
+  /* ── Hero banner ──────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--darkBg) 0%, var(--navy2) 55%, var(--teal) 100%);
+    border-radius: 20px; padding: 36px 32px; margin-bottom: 24px;
+    position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
+  }
+  .hero::after { content: ''; position: absolute; right: -50px; top: -50px; width: 260px; height: 260px; border-radius: 50%; background: rgba(0,180,216,.07); pointer-events: none; }
+  .hero .kicker { color: var(--gold2); }
+  .hero h1 { font-size: 36px; font-weight: 900; color: #fff; line-height: 1.1; margin: 8px 0 10px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 13px; color: #9AA6BA; max-width: 500px; }
+  .btn-primary {
+    display: inline-block; margin-top: 18px;
+    background: var(--gold); color: #fff; border: none;
+    font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    padding: 11px 22px; border-radius: 30px; cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 16px rgba(232,134,42,.38); transition: transform .12s, box-shadow .12s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,134,42,.48); }
+
+  /* ── Module cards ─────────────────────────────────────── */
+  .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .module-card {
+    background: var(--darkCard); border-radius: var(--r); border: 1.5px solid;
+    padding: 20px; cursor: pointer; transition: transform .18s, box-shadow .18s; text-decoration: none;
+  }
+  .module-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .mod-emoji { font-size: 26px; margin-bottom: 10px; }
+  .mod-label { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+  .mod-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .mod-desc  { font-size: 11px; color: #9AA6BA; }
+
+  /* ── Verse ────────────────────────────────────────────── */
+  .verse { background: #FAF4E6; border: 1px solid #F4A85C; border-radius: 12px; padding: 13px 16px; font-size: 13px; color: #6A5524; font-style: italic; }
+
+  /* ── Accordion ────────────────────────────────────────── */
+  .acc { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); margin-bottom: 10px; overflow: hidden; }
+  .acc-head { display: flex; align-items: center; gap: 14px; padding: 15px 18px; cursor: pointer; user-select: none; transition: background .14s; }
+  .acc-head:hover { background: var(--soft); }
+  .acc-icon { width: 42px; height: 42px; border-radius: 11px; background: var(--soft); border: 1px solid var(--line); display: grid; place-items: center; font-size: 19px; flex: none; }
+  .acc-text { flex: 1; }
+  .acc-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .acc-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .acc-chev  { font-size: 18px; color: var(--gold); font-weight: 900; transition: transform .24s; flex: none; line-height: 1; }
+  .acc.open .acc-chev { transform: rotate(45deg); }
+  .acc-body  { max-height: 0; overflow: hidden; transition: max-height .34s ease; }
+  .acc-body-inner { padding: 4px 18px 18px; }
+
+  /* ── Tip box ──────────────────────────────────────────── */
+  .tipbox { border-left: 3px solid var(--gold); background: var(--soft); border-radius: 0 10px 10px 0; padding: 11px 14px; font-size: 13px; color: var(--muted); margin: 12px 0; }
+  .tipbox b { color: var(--ink); }
+  .tipbox.green  { border-left-color: var(--green);  background: var(--greenBg);  color: #14532D; }
+  .tipbox.purple { border-left-color: var(--purple); background: var(--purpleBg); color: var(--purple); }
+  .tipbox.red    { border-left-color: var(--red);    background: #FEE2E2;         color: #7F1D1D; }
+
+  /* ── Steps ────────────────────────────────────────────── */
+  .stepper { margin: 14px 0; }
+  .step { display: flex; gap: 14px; padding-bottom: 16px; position: relative; }
+  .step:not(:last-child)::before { content: ''; position: absolute; left: 17px; top: 38px; bottom: 0; width: 2px; background: var(--line); }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+  .step-body { flex: 1; padding-top: 5px; }
+  .step-title { font-weight: 700; font-size: 13.5px; margin-bottom: 3px; }
+  .step-desc  { font-size: 12.5px; color: var(--muted); }
+
+  /* ── Reveal button ────────────────────────────────────── */
+  .reveal-btn {
+    background: transparent; border: 1.5px solid var(--gold); color: var(--gold);
+    padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 700;
+    cursor: pointer; font-family: inherit; margin-top: 10px;
+    transition: background .14s, color .14s;
+  }
+  .reveal-btn:hover { background: var(--gold); color: #fff; }
+  .reveal-content { display: none; margin-top: 10px; animation: fadeUp .2s ease; }
+  .reveal-content.show { display: block; }
+
+  /* ── Click-to-reveal cards ────────────────────────────── */
+  .reveal-card {
+    background: var(--card); border-radius: var(--r); box-shadow: var(--shadow);
+    border: 1px solid var(--line); padding: 16px; cursor: pointer;
+    border-top: 4px solid; transition: transform .15s, box-shadow .15s;
+    position: relative;
+  }
+  .reveal-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .reveal-card .rc-emoji { font-size: 22px; margin-bottom: 8px; }
+  .reveal-card .rc-title { font-size: 13.5px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .reveal-card .rc-hint  { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 0; }
+  .reveal-card .rc-body  { display: none; margin-top: 10px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+  .reveal-card.open .rc-body { display: block; }
+  .reveal-card .rc-arrow { position: absolute; top: 16px; right: 16px; font-size: 14px; color: var(--gold); font-weight: 900; transition: transform .22s; }
+  .reveal-card.open .rc-arrow { transform: rotate(45deg); }
+  .reveal-card .rc-hint { display: block; }
+  .reveal-card.open .rc-hint { display: none; }
+
+  /* ── Mistake cards (click to reveal fix) ─────────────── */
+  .mistakes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .mistake-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; }
+  .mc-warn { display: flex; align-items: center; gap: 10px; padding: 15px 16px; }
+  .mc-icon { font-size: 22px; flex: none; }
+  .mc-label-wrap { flex: 1; }
+  .mc-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .mc-click { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 2px; }
+  .mc-fix { padding: 0 16px 14px; display: none; }
+  .mistake-card.revealed .mc-fix { display: block; }
+  .mistake-card.revealed .mc-click { display: none; }
+  .mc-fix-inner { background: var(--greenBg); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #14532D; }
+
+  /* ── Table ────────────────────────────────────────────── */
+  .data-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+  .data-table th { background: var(--navy); color: #fff; padding: 11px 14px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-align: center; }
+  .data-table td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid var(--line); text-align: center; }
+  .data-table tr:nth-child(even) td { background: var(--soft); }
+  .data-table td:first-child { text-align: left; font-weight: 700; }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* ── Shortcut table ───────────────────────────────────── */
+  .sc-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+  .sc-table th { background: var(--navy); color: #fff; padding: 10px 14px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; text-align: left; }
+  .sc-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .sc-table tr:nth-child(even) td { background: var(--soft); }
+  .sc-table tr:last-child td { border-bottom: none; }
+  .kbd { display: inline-block; background: var(--soft); border: 1.5px solid var(--line); border-radius: 6px; padding: 2px 8px; font-family: monospace; font-size: 11.5px; color: var(--ink); white-space: nowrap; }
+
+  /* ── Challenge cards ──────────────────────────────────── */
+  .challenges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 14px 0; }
+  .challenge-card { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
+  .ch-header { padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .ch-level  { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+  .ch-emoji  { font-size: 22px; }
+  .ch-body   { padding: 16px; }
+  .ch-title  { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--ink); }
+  .ch-task   { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+  .ch-tip    { font-size: 12px; color: var(--gold); font-style: italic; border-top: 1px solid var(--line); padding-top: 10px; }
+
+  /* ── Week cards ───────────────────────────────────────── */
+  .weeks-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
+  .week-card  { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
+  .wk-header  { padding: 10px 14px; }
+  .wk-label   { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+  .wk-body    { padding: 14px; }
+  .wk-emoji   { font-size: 24px; margin-bottom: 8px; }
+  .wk-title   { font-size: 13.5px; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
+  .wk-task    { font-size: 11.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+  .wk-goal    { font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; }
+
+  /* ── Platform cards ───────────────────────────────────── */
+  .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 14px 0; }
+  .platform-card  { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); padding: 18px; }
+  .pc-icon { font-size: 26px; margin-bottom: 10px; }
+  .pc-name { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: var(--ink); }
+  .platform-card ul { list-style: none; padding: 0; }
+  .platform-card li { font-size: 12.5px; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--line); display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .platform-card li:last-child { border: none; }
+  .platform-card li::before { content: '●'; font-size: 5px; color: var(--gold); flex: none; margin-top: 6px; }
+
+  /* ── Discussion grid ──────────────────────────────────── */
+  .discuss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .discuss-card {
+    background: var(--card); border-radius: var(--r); box-shadow: var(--shadow);
+    border: 1px solid var(--line); padding: 16px; cursor: pointer; border-top: 4px solid;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .discuss-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .dc-num  { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+  .dc-q    { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; line-height: 1.5; }
+  .dc-sub  { font-size: 12px; color: var(--muted); font-style: italic; display: none; }
+  .dc-hint { font-size: 11px; color: var(--muted); font-style: italic; }
+  .discuss-card.open .dc-sub  { display: block; }
+  .discuss-card.open .dc-hint { display: none; }
+
+  /* ── Progress tracker ─────────────────────────────────── */
+  .progress-global { height: 3px; background: var(--darkLine); position: sticky; top: 56px; z-index: 99; }
+  .progress-fill   { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); width: 0%; transition: width .4s ease; }
+
+  /* ── Voiceover steps row ──────────────────────────────── */
+  .vo-steps { display: flex; align-items: flex-start; gap: 0; margin: 14px 0; flex-wrap: wrap; }
+  .vo-step  { text-align: center; flex: 1; min-width: 90px; padding: 8px 4px; }
+  .vo-num   { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 12px; margin: 0 auto 6px; }
+  .vo-label { font-size: 11px; font-weight: 700; color: var(--ink); }
+  .vo-arrow { color: var(--line); font-size: 22px; padding-top: 10px; flex: none; }
+
+  /* ── Grid helpers ─────────────────────────────────────── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .mt8   { margin-top: 8px; }
+  .mt14  { margin-top: 14px; }
+  .mt20  { margin-top: 20px; }
+  .mb14  { margin-bottom: 14px; }
+  .mb20  { margin-bottom: 20px; }
+  hr.divider { border: none; border-top: 1px solid var(--line); margin: 22px 0; }
+
+  /* ── Closing screen ───────────────────────────────────── */
+  .final-hero { background: linear-gradient(135deg, var(--darkBg) 0%, var(--navy2) 60%, var(--teal) 100%); border-radius: 20px; padding: 36px 32px; margin-bottom: 20px; box-shadow: var(--shadow-lg); }
+  .final-hero h1 { font-size: 36px; font-weight: 900; color: #fff; line-height: 1.15; }
+  .final-hero h1 span { color: var(--gold); }
+  .final-hero p { color: #9AA6BA; font-size: 13px; margin-top: 8px; }
+  .commit-list { list-style: none; }
+  .commit-list li { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .commit-list li:last-child { border: none; }
+  .commit-list li::before { content: '✓'; color: var(--teal); font-weight: 900; font-size: 15px; flex: none; }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .sidenav { transform: translateX(-218px); }
+    .sidenav.open { transform: none; }
+    .main { margin-left: 0; padding: 20px 16px 60px; }
+    .mobile-toggle { display: block; }
+    .module-grid { grid-template-columns: 1fr; }
+    .challenges-grid { grid-template-columns: 1fr; }
+    .weeks-grid { grid-template-columns: 1fr 1fr; }
+    .platforms-grid { grid-template-columns: 1fr; }
+    .discuss-grid { grid-template-columns: 1fr; }
+    .mistakes-grid { grid-template-columns: 1fr; }
+    .grid2 { grid-template-columns: 1fr; }
+    .grid3 { grid-template-columns: 1fr; }
+  }
+  @media print {
+    .sidenav, .appbar, .progress-global, .mobile-toggle { display: none !important; }
+    .main { margin: 0; padding: 20px; }
+    .screen { display: block !important; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="appbar-logo-fallback">🎬</div>
+  <div class="appbar-text">
+    <div class="appbar-org">Dominion World Center</div>
+    <div class="appbar-sub">Podcast Ministry · CapCut Training</div>
+  </div>
+  <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+</header>
+<div class="progress-global"><div class="progress-fill" id="gProgress"></div></div>
+<div class="overlay" id="overlay" onclick="closeNav()"></div>
+
+<!-- ── Side nav ───────────────────────────────────────── -->
+<nav class="sidenav" id="sidenav">
+
+  <div class="nav-group">
+    <div class="nav-group-label">Start</div>
+    <div class="nav-link active" onclick="show('home')"><span class="nav-icon">🏠</span>Welcome</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Module 01 · Video</div>
+    <div class="nav-link" onclick="show('m1-interface')"><span class="nav-icon">🖥️</span>Interface Overview</div>
+    <div class="nav-link" onclick="show('m1-timeline')"><span class="nav-icon">✂️</span>Importing &amp; Timeline</div>
+    <div class="nav-link" onclick="show('m1-transitions')"><span class="nav-icon">🎞️</span>Transitions &amp; Text</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Module 02 · Audio</div>
+    <div class="nav-link" onclick="show('m2-levels')"><span class="nav-icon">🎵</span>Music &amp; Levels</div>
+    <div class="nav-link" onclick="show('m2-voiceover')"><span class="nav-icon">🎙️</span>Voiceover &amp; Noise</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Module 03 · Export</div>
+    <div class="nav-link" onclick="show('m3-settings')"><span class="nav-icon">⚙️</span>Export Settings</div>
+    <div class="nav-link" onclick="show('m3-platforms')"><span class="nav-icon">📱</span>Sharing to Platforms</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Reference</div>
+    <div class="nav-link" onclick="show('shortcuts')"><span class="nav-icon">⌨️</span>Keyboard Shortcuts</div>
+    <div class="nav-link" onclick="show('mistakes')"><span class="nav-icon">🚨</span>Common Mistakes</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Practice</div>
+    <div class="nav-link" onclick="show('podcast-context')"><span class="nav-icon">🎧</span>Podcast Context</div>
+    <div class="nav-link" onclick="show('challenges')"><span class="nav-icon">⚡</span>Challenges</div>
+    <div class="nav-link" onclick="show('discussion')"><span class="nav-icon">💬</span>Discussion Questions</div>
+    <div class="nav-link" onclick="show('four-weeks')"><span class="nav-icon">📅</span>4-Week Plan</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Wrap Up</div>
+    <div class="nav-link" onclick="show('complete')"><span class="nav-icon">✅</span>Summary</div>
+  </div>
+
+</nav>
+
+<!-- ── Main content ────────────────────────────────────── -->
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════
+     HOME
+══════════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="kicker">Podcast Ministry · Georgetown, Guyana</div>
+    <h1>Level Up Your<br><span>Podcast Editing Skills</span></h1>
+    <p>CapCut Video &amp; Audio Editing for the DWC Media Team. Click any section to reveal the content.</p>
+    <button class="btn-primary" onclick="show('m1-interface')">Start Learning →</button>
+  </div>
+
+  <div class="verse mb20">"Go into all the world and proclaim the gospel." — <strong>Mark 16:15</strong></div>
+
+  <div class="kicker mb14">Three Modules</div>
+  <div class="module-grid">
+    <div class="module-card" style="border-color:#00B4D8" onclick="show('m1-interface')">
+      <div class="mod-emoji">📹</div>
+      <div class="mod-label" style="color:#00B4D8">Module 01</div>
+      <div class="mod-title">Video Basics</div>
+      <div class="mod-desc">Interface · Timeline · Cuts · Transitions · Text</div>
+    </div>
+    <div class="module-card" style="border-color:#E8862A" onclick="show('m2-levels')">
+      <div class="mod-emoji">🎙️</div>
+      <div class="mod-label" style="color:#E8862A">Module 02</div>
+      <div class="mod-title">Audio Mixing</div>
+      <div class="mod-desc">Music · Levels · Voiceover · Noise Reduction</div>
+    </div>
+    <div class="module-card" style="border-color:#B71C34" onclick="show('m3-settings')">
+      <div class="mod-emoji">🚀</div>
+      <div class="mod-label" style="color:#B71C34">Module 03</div>
+      <div class="mod-title">Export &amp; Deliver</div>
+      <div class="mod-desc">Resolution · Format · Platforms · File Size</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M1: INTERFACE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m1-interface">
+  <div class="kicker">Module 01 · Video Editing Basics</div>
+  <div class="screen-title">Interface Overview</div>
+  <div class="screen-sub">Tap each panel to learn what it does.</div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">▶️</div><div class="acc-text"><div class="acc-title">Preview Window</div><div class="acc-sub">Watch your edit update in real-time</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">The Preview Window shows your video exactly as it will look when exported. It updates instantly as you make changes on the timeline. Use <kbd class="kbd">Spacebar</kbd> to play and pause at any time.</p>
+      <div class="tipbox">Full-screen preview available · Spacebar to play/pause · scrub with the playhead</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">📂</div><div class="acc-text"><div class="acc-title">Media Panel</div><div class="acc-sub">Import &amp; browse clips, photos, and music</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">This is where all your imported files live. Click <strong>Import</strong> to bring files from your computer into the project. You can browse, preview, and organize everything here before adding to the timeline.</p>
+      <div class="tipbox"><b>Supported formats:</b> MP4 · MOV · MKV (video) · PNG · JPG (images) · MP3 · WAV (audio)</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🎞️</div><div class="acc-text"><div class="acc-title">Timeline</div><div class="acc-sub">Arrange, trim, and layer all your clips</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">The Timeline is the heart of every edit. Drag clips from the Media Panel here and arrange them in the order you want. You can stack video, audio, and text tracks on separate layers.</p>
+      <div class="tipbox">Zoom in: <kbd class="kbd">Ctrl + =</kbd> &nbsp;·&nbsp; Zoom out: <kbd class="kbd">Ctrl + –</kbd> &nbsp;·&nbsp; Use this before making precise cuts</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🎛️</div><div class="acc-text"><div class="acc-title">Properties Panel</div><div class="acc-sub">Adjust clip settings, effects, speed &amp; volume</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Select any clip on the timeline and the Properties Panel shows every adjustable setting for that clip: speed, volume, color, effects, position, and more.</p>
+      <div class="tipbox">All changes apply only to the selected clip. Click a different clip to edit that one instead.</div>
+    </div></div>
+  </div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m1-timeline')">Next: Importing &amp; Timeline →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M1: IMPORTING & TIMELINE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m1-timeline">
+  <div class="kicker">Module 01 · Video Editing Basics</div>
+  <div class="screen-title">Importing &amp; Timeline</div>
+  <div class="screen-sub">Four steps to get your first edit started.</div>
+
+  <div class="stepper mt14">
+    <div class="step">
+      <div class="step-num" style="background:var(--cyan)">1</div>
+      <div class="step-body">
+        <div class="step-title">Import Your Media</div>
+        <div class="step-desc">Click <strong>Import</strong> in the Media Panel and select files from your computer. Supports MP4, MOV, MKV, PNG, MP3, WAV.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--gold)">2</div>
+      <div class="step-body">
+        <div class="step-title">Drag to Timeline</div>
+        <div class="step-desc">Drag clips from the Media Panel down to the Timeline. Arrange them in the order you want them to play.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--red)">3</div>
+      <div class="step-body">
+        <div class="step-title">Trim a Clip</div>
+        <div class="step-desc">Hover over the left or right edge of a clip → drag to shorten or extend it. The Preview Window updates live as you trim.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--navy)">4</div>
+      <div class="step-body">
+        <div class="step-title">Split a Clip</div>
+        <div class="step-desc">Move the playhead to the exact cut point. Press <kbd class="kbd">Ctrl+B</kbd> (PC) or <kbd class="kbd">Cmd+B</kbd> (Mac) to split. Delete the unwanted piece.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tipbox red">🚨 <b>Always do this first:</b> Record a 30-second test clip and play it back before every recording session. Catches disasters before they happen.</div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m1-transitions')">Next: Transitions &amp; Text →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M1: TRANSITIONS & TEXT
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m1-transitions">
+  <div class="kicker">Module 01 · Video Editing Basics</div>
+  <div class="screen-title">Transitions &amp; Text Overlays</div>
+  <div class="screen-sub">Click each topic to expand.</div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">✨</div><div class="acc-text"><div class="acc-title">Adding Transitions</div><div class="acc-sub">Smooth cuts between clips</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <div class="stepper">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click the icon between two clips</div><div class="step-desc">A small icon appears between adjacent clips on the timeline when you hover.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Choose a transition style</div><div class="step-desc">Options include Dissolve, Slide, Zoom, Wipe, and many more. Browse the panel that opens.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Set the duration</div><div class="step-desc">Drag the Duration slider. 0.3–1.5s works well for most ministry content.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Apply to All (optional)</div><div class="step-desc">Click "Apply to All" to use the same transition between every clip in the timeline.</div></div></div>
+      </div>
+      <div class="tipbox"><b>Ministry rule:</b> 1–2 transition styles per episode maximum. Consistency feels professional; mixing many styles feels chaotic.</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">📝</div><div class="acc-text"><div class="acc-title">Text Overlays</div><div class="acc-sub">Titles, lower-thirds, scripture references</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <div class="stepper">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click Text → Add Text</div><div class="step-desc">Found in the top toolbar of CapCut.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Type your content</div><div class="step-desc">Scripture reference, guest name, episode title, or lower-third.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Style in Properties Panel</div><div class="step-desc">Adjust font, size, color, animation, and position in the right panel.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Set timing on Timeline</div><div class="step-desc">Drag the text block on the timeline to control exactly when it appears and disappears.</div></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">💬</div><div class="acc-text"><div class="acc-title">Auto Captions</div><div class="acc-sub">AI generates subtitles from spoken audio automatically</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">CapCut listens to your audio and generates editable captions automatically. This is one of the most powerful tools for ministry content — it makes your videos accessible and effective on social media.</p>
+      <div class="tipbox purple">85% of social video is watched on mute. Auto Captions turns your message into readable text for everyone scrolling past. This is not optional for ministry reach.</div>
+    </div></div>
+  </div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m2-levels')">Next: Module 02 – Audio →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M2: MUSIC & LEVELS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m2-levels">
+  <div class="kicker">Module 02 · Audio Editing &amp; Mixing</div>
+  <div class="screen-title">Music &amp; Volume Levels</div>
+  <div class="screen-sub">Click each topic to expand.</div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🎵</div><div class="acc-text"><div class="acc-title">Adding Background Music</div><div class="acc-sub">Royalty-free library or upload your own</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <div class="stepper">
+        <div class="step"><div class="step-num" style="background:var(--gold)">1</div><div class="step-body"><div class="step-title">Click Audio → Music</div><div class="step-desc">Found in the top toolbar of CapCut.</div></div></div>
+        <div class="step"><div class="step-num" style="background:var(--gold)">2</div><div class="step-body"><div class="step-title">Browse or upload</div><div class="step-desc">CapCut's royalty-free library or upload your own file from your computer.</div></div></div>
+        <div class="step"><div class="step-num" style="background:var(--gold)">3</div><div class="step-body"><div class="step-title">Drag to Audio Track</div><div class="step-desc">Position the music track below your video clips on the timeline.</div></div></div>
+        <div class="step"><div class="step-num" style="background:var(--gold)">4</div><div class="step-body"><div class="step-title">Add Fade In / Fade Out</div><div class="step-desc">Right-click the music track → Add Fade. Use 0.5–1s fades to avoid jarring audio cuts at the start and end.</div></div></div>
+      </div>
+      <div class="tipbox">Always check the music license before using in church broadcasts or YouTube uploads.</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🔊</div><div class="acc-text"><div class="acc-title">Adjusting Volume Levels</div><div class="acc-sub">Every spoken word must be clearly audible</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <div style="overflow-x:auto;border-radius:10px;margin-bottom:12px">
+        <table class="data-table">
+          <thead><tr><th>Track Type</th><th>Recommended Volume</th></tr></thead>
+          <tbody>
+            <tr><td>Speech / Dialogue</td><td>100%</td></tr>
+            <tr><td>Background music (with speech)</td><td>15–30%</td></tr>
+            <tr><td>Sound effects</td><td>60–80%</td></tr>
+            <tr><td>Intro / Outro music (no speech)</td><td>80–100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tipbox">Click a clip → Properties Panel → Volume slider to adjust. If viewers can't hear the speaker, they leave.</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🎛️</div><div class="acc-text"><div class="acc-title">Keyframe Volume</div><div class="acc-sub">Raise or lower volume at specific moments</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Keyframes let you automate volume changes at precise points in the timeline. Use them to duck music under speech, lift it during pauses, or fade it out exactly when needed.</p>
+      <div class="stepper">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Select your audio clip</div><div class="step-desc">Click the music or audio track on the timeline.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Click the Keyframe button</div><div class="step-desc">Found in the Properties Panel. Adds a volume anchor at the playhead position.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Move playhead, adjust volume</div><div class="step-desc">Drag the playhead to a new position, set a different volume — CapCut creates a smooth curve between them.</div></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <hr class="divider">
+  <h3 class="mb14">Discussion — Click to Reveal</h3>
+  <div class="grid3">
+    <div class="reveal-card" style="border-top-color:var(--purple)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div>
+      <div class="rc-emoji">🤔</div>
+      <div class="rc-title">What happens when music overpowers the speaker?</div>
+      <div class="rc-hint">Tap to reveal</div>
+      <div class="rc-body">Share a podcast you've heard where this happened. What did you do — keep watching or leave? What would you do differently as the editor?</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--gold)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div>
+      <div class="rc-emoji">🎯</div>
+      <div class="rc-title">What's your church's current audio standard?</div>
+      <div class="rc-hint">Tap to reveal</div>
+      <div class="rc-body">Is there a volume guide your team already follows? If not — what should the standard be, and who owns it?</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--cyan)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div>
+      <div class="rc-emoji">💡</div>
+      <div class="rc-title">Name one song perfect for your podcast open.</div>
+      <div class="rc-hint">Tap to reveal</div>
+      <div class="rc-body">Genre, vibe, energy — what fits DWC's voice and reflects the spirit of your ministry content?</div>
+    </div>
+  </div>
+
+  <div class="verse mt20">"Whatever you do, work heartily, as for the Lord." — Col 3:23</div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m2-voiceover')">Next: Voiceover &amp; Noise →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M2: VOICEOVER & NOISE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m2-voiceover">
+  <div class="kicker">Module 02 · Audio Editing &amp; Mixing</div>
+  <div class="screen-title">Voiceover &amp; Noise Reduction</div>
+  <div class="screen-sub">Click each section to expand.</div>
+
+  <div class="card mb14">
+    <div style="font-weight:700;font-size:14px;margin-bottom:14px">Recording a Voiceover — 5 Steps</div>
+    <div class="vo-steps">
+      <div class="vo-step"><div class="vo-num">1</div><div class="vo-label">Audio → Record</div></div>
+      <div class="vo-arrow">›</div>
+      <div class="vo-step"><div class="vo-num">2</div><div class="vo-label">Select Voiceover</div></div>
+      <div class="vo-arrow">›</div>
+      <div class="vo-step"><div class="vo-num">3</div><div class="vo-label">Set start point</div></div>
+      <div class="vo-arrow">›</div>
+      <div class="vo-step"><div class="vo-num">4</div><div class="vo-label">Hit Record</div></div>
+      <div class="vo-arrow">›</div>
+      <div class="vo-step"><div class="vo-num" style="background:var(--teal)">5</div><div class="vo-label">Stop &amp; Trim</div></div>
+    </div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">✨</div><div class="acc-text"><div class="acc-title">Noise Reduction</div><div class="acc-sub">AI removes background hum and room noise</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Select your audio clip → Properties Panel → Audio → Noise Reduction. CapCut's AI analyzes and removes consistent background noise — AC hum, fan noise, room echo.</p>
+      <div class="tipbox"><b>Best for:</b> consistent noise (AC hum, fan). <b>Less effective on:</b> variable noise (traffic, crowd). Always record in the quietest space first.</div>
+      <div class="tipbox red mt8">Noise Reduction is a polish tool — not a rescue tool. Good recording conditions cannot be replaced.</div>
+    </div></div>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">🎵</div><div class="acc-text"><div class="acc-title">Beat Sync</div><div class="acc-sub">Auto-marks music beats as cut points on the timeline</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Audio → Beat Sync. CapCut analyzes your music and places markers at each beat on the timeline. Great for worship highlight reels and Sunday recap shorts.</p>
+      <div class="tipbox">Try it with an energetic worship track — the result looks professional with very little effort.</div>
+    </div></div>
+  </div>
+
+  <div class="tipbox red mt14">
+    📋 <b>True or False:</b> Noise Reduction can fully fix a recording made in a loud market.
+    <button class="reveal-btn" onclick="revealContent('nr-ans')">Reveal Answer</button>
+    <div class="reveal-content" id="nr-ans">
+      <div class="tipbox green mt8">✅ <b>FALSE.</b> Always record in the quietest space available. Noise Reduction helps clean up — it cannot replace good conditions.</div>
+    </div>
+  </div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m3-settings')">Next: Module 03 – Export →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M3: EXPORT SETTINGS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m3-settings">
+  <div class="kicker">Module 03 · Exporting &amp; Delivery</div>
+  <div class="screen-title">Export Settings Guide</div>
+  <div class="screen-sub">Settings for every platform your team publishes to.</div>
+
+  <div style="overflow-x:auto;border-radius:var(--r);margin-bottom:16px">
+    <table class="data-table">
+      <thead><tr><th>Platform</th><th>Resolution</th><th>Format</th><th>Frame Rate</th><th>Quality</th></tr></thead>
+      <tbody>
+        <tr><td>YouTube / Website</td><td>1080p or 4K</td><td>MP4 (H.264)</td><td>30 fps</td><td>Recommended</td></tr>
+        <tr><td>Instagram Reels</td><td>1080 × 1920</td><td>MP4 (H.264)</td><td>30 fps</td><td>Recommended</td></tr>
+        <tr><td>Facebook</td><td>1080p</td><td>MP4 (H.264)</td><td>30 fps</td><td>Recommended</td></tr>
+        <tr><td>Instagram Story</td><td>1080 × 1920</td><td>MP4 (H.264)</td><td>30 fps</td><td>Recommended</td></tr>
+        <tr><td>Archive / Master</td><td>4K if available</td><td>MP4 (H.265)</td><td>24–30 fps</td><td>Maximum</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="acc" onclick="toggleAcc(this)">
+    <div class="acc-head"><div class="acc-icon">📤</div><div class="acc-text"><div class="acc-title">How to Export</div><div class="acc-sub">Step-by-step process</div></div><div class="acc-chev">+</div></div>
+    <div class="acc-body"><div class="acc-body-inner">
+      <div class="stepper">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click Export (top right)</div><div class="step-desc">The Export button is always in the top-right corner of CapCut.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Choose Resolution &amp; Quality</div><div class="step-desc">Match the settings in the table above for your target platform.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Click Export and wait</div><div class="step-desc">Do not close CapCut or cancel mid-export. Cancelling creates corrupt files.</div></div></div>
+        <div class="step"><div class="step-num" style="background:var(--teal)">4</div><div class="step-body"><div class="step-title">Save a master copy</div><div class="step-desc">Always keep one high-quality export before resizing or reformatting for different platforms.</div></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="tipbox">💡 Always export 1080p minimum for YouTube. Low-res video looks unprofessional on large screens and TVs.</div>
+
+  <div class="mt20">
+    <button class="btn-primary" onclick="show('m3-platforms')">Next: Sharing to Platforms →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     M3: PLATFORMS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-m3-platforms">
+  <div class="kicker">Module 03 · Exporting &amp; Delivery</div>
+  <div class="screen-title">Sharing to Platforms</div>
+  <div class="screen-sub">Platform-specific best practices for DWC content.</div>
+
+  <div class="platforms-grid">
+    <div class="platform-card">
+      <div class="pc-icon">▶️</div>
+      <div class="pc-name" style="color:#C62828">YouTube</div>
+      <ul>
+        <li>Export 1080p MP4 minimum</li>
+        <li>Add title, description &amp; chapter timestamps</li>
+        <li>Schedule for Sunday morning release</li>
+        <li>Custom thumbnail: 1280 × 720</li>
+      </ul>
+    </div>
+    <div class="platform-card">
+      <div class="pc-icon">📱</div>
+      <div class="pc-name" style="color:var(--gold)">Instagram / Reels</div>
+      <ul>
+        <li>Export vertical 9:16 for Reels &amp; Stories</li>
+        <li>Direct Share to Instagram from CapCut</li>
+        <li>Keep Reels under 90 seconds for reach</li>
+        <li>Add captions — 85% watch on mute</li>
+      </ul>
+    </div>
+    <div class="platform-card">
+      <div class="pc-icon">📘</div>
+      <div class="pc-name" style="color:#1565C0">Facebook</div>
+      <ul>
+        <li>Upload native video, not a YouTube link</li>
+        <li>1080p MP4 performs best</li>
+        <li>Square or landscape both work well</li>
+        <li>Schedule via Facebook Creator Studio</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reveal-card mt14" style="border-top-color:var(--purple);max-width:100%" onclick="this.classList.toggle('open')">
+    <div class="rc-arrow">+</div>
+    <div class="rc-emoji">🙋</div>
+    <div class="rc-title">Which platform matters most for DWC right now?</div>
+    <div class="rc-hint">Tap to open discussion</div>
+    <div class="rc-body">YouTube for long-term reach? Instagram for weekly clips and younger audience? Facebook for existing community? Discuss as a team — your answer should shape your publishing priority.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SHORTCUTS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-shortcuts">
+  <div class="kicker">Reference</div>
+  <div class="screen-title">Keyboard Shortcuts</div>
+  <div class="screen-sub">Print this page and post it at the editing station.</div>
+
+  <div style="overflow-x:auto;border-radius:var(--r);margin-bottom:16px">
+    <table class="sc-table">
+      <thead><tr><th></th><th>Action</th><th>Windows / PC</th><th>Mac</th></tr></thead>
+      <tbody>
+        <tr><td>✂️</td><td>Split clip at playhead</td><td><kbd class="kbd">Ctrl + B</kbd></td><td><kbd class="kbd">Cmd + B</kbd></td></tr>
+        <tr><td>↩️</td><td>Undo</td><td><kbd class="kbd">Ctrl + Z</kbd></td><td><kbd class="kbd">Cmd + Z</kbd></td></tr>
+        <tr><td>↪️</td><td>Redo</td><td><kbd class="kbd">Ctrl + Y</kbd></td><td><kbd class="kbd">Cmd + Shift + Z</kbd></td></tr>
+        <tr><td>▶️</td><td>Play / Pause</td><td><kbd class="kbd">Spacebar</kbd></td><td><kbd class="kbd">Spacebar</kbd></td></tr>
+        <tr><td>🔍</td><td>Zoom timeline in</td><td><kbd class="kbd">Ctrl + =</kbd></td><td><kbd class="kbd">Cmd + =</kbd></td></tr>
+        <tr><td>🔎</td><td>Zoom timeline out</td><td><kbd class="kbd">Ctrl + –</kbd></td><td><kbd class="kbd">Cmd + –</kbd></td></tr>
+        <tr><td>⬛</td><td>Select all clips</td><td><kbd class="kbd">Ctrl + A</kbd></td><td><kbd class="kbd">Cmd + A</kbd></td></tr>
+        <tr><td>🗑️</td><td>Delete selected</td><td><kbd class="kbd">Delete</kbd></td><td><kbd class="kbd">Delete</kbd></td></tr>
+        <tr><td>📤</td><td>Export</td><td><kbd class="kbd">Ctrl + E</kbd></td><td><kbd class="kbd">Cmd + E</kbd></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="btn-primary" onclick="window.print()">🖨 Print This Page</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     COMMON MISTAKES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-mistakes">
+  <div class="kicker">Reference</div>
+  <div class="screen-title">Common Mistakes</div>
+  <div class="screen-sub">Tap each card to reveal the fix.</div>
+
+  <div class="mistakes-grid">
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">🔊</div><div class="mc-label-wrap"><div class="mc-label">Music too loud</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Keep background music at 15–30% when there's speech. If viewers can't hear the speaker, they leave.</div></div>
+    </div>
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">📉</div><div class="mc-label-wrap"><div class="mc-label">Exporting too small</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Always export at 1080p minimum. Low-res video looks unprofessional on large screens and TVs.</div></div>
+    </div>
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">✨</div><div class="mc-label-wrap"><div class="mc-label">Too many transitions</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Use 1–2 styles per episode maximum. Mixing many types feels chaotic and distracts from the message.</div></div>
+    </div>
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">💬</div><div class="mc-label-wrap"><div class="mc-label">No captions on social</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Add Auto Captions. 85% of social video is watched on mute — without captions, people scroll past.</div></div>
+    </div>
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">💾</div><div class="mc-label-wrap"><div class="mc-label">Not saving the project</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Press Ctrl+S before closing. CapCut auto-saves, but always keep raw footage in a separate backup folder.</div></div>
+    </div>
+    <div class="mistake-card" onclick="this.classList.toggle('revealed')">
+      <div class="mc-warn"><div class="mc-icon">⏩</div><div class="mc-label-wrap"><div class="mc-label">Rushing the export</div><div class="mc-click">Tap to reveal the fix</div></div></div>
+      <div class="mc-fix"><div class="mc-fix-inner">Wait for 100% completion. Cancelling mid-export creates corrupt files that must be fully re-exported.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PODCAST CONTEXT
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-podcast-context">
+  <div class="kicker">Practice</div>
+  <div class="screen-title">You're Editing a Video Podcast.</div>
+  <div class="screen-sub">That changes what matters most. Tap each card to expand.</div>
+
+  <div class="grid2" style="gap:12px;margin:14px 0">
+    <div class="reveal-card" style="border-top-color:var(--cyan)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">🎧</div>
+      <div class="rc-title">Talking heads need clean audio</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">Speech clarity beats music. Keep BGM very low or completely off during conversation — the voices are the content, not the music underneath.</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--gold)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">✂️</div>
+      <div class="rc-title">Long-form cuts are different</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">You're trimming dead air and filler words, not building a highlight reel. Patience and precision are the skills — zoom into the waveform and cut tight.</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--teal)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">📝</div>
+      <div class="rc-title">Titles &amp; lower-thirds carry information</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">Guest names, episode numbers, scripture references — text overlays matter more in a podcast than a highlight reel. They anchor the viewer in the conversation.</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--navy)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">🎥</div>
+      <div class="rc-title">B-roll covers jump cuts</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">Splice in scripture text, worship clips, or ministry graphics over audio edits to hide visual cuts. This keeps the edit feeling smooth even with heavy trimming.</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--red)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">🎙️</div>
+      <div class="rc-title">Consistent intro &amp; outro</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">Build one branded open and close sequence and reuse it every episode. Consistency builds audience recognition — they know immediately it's DWC content.</div>
+    </div>
+    <div class="reveal-card" style="border-top-color:var(--gold)" onclick="this.classList.toggle('open')">
+      <div class="rc-arrow">+</div><div class="rc-emoji">🚩</div>
+      <div class="rc-title">Chapters help listeners navigate</div>
+      <div class="rc-hint">Tap to expand</div>
+      <div class="rc-body">Add YouTube chapter timestamps in the video description. Viewers stay longer when they can skip to what matters to them — longer watch time signals quality to the algorithm.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CHALLENGES
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-challenges">
+  <div class="kicker">Practice</div>
+  <div class="screen-title">Podcast Editing Challenges</div>
+  <div class="screen-sub">Choose your level. Complete it. Show the facilitator when done.</div>
+
+  <div class="challenges-grid">
+    <div class="challenge-card">
+      <div class="ch-header" style="background:var(--cyan)">
+        <span class="ch-level">Beginner</span>
+        <span class="ch-emoji">✂️</span>
+      </div>
+      <div class="ch-body">
+        <div class="ch-title">Clean the Conversation</div>
+        <div class="ch-task">Import a raw podcast recording. Remove at least 5 filler words ("um", "uh", "like") by splitting and deleting. Keep the audio feeling natural — no jarring jumps.</div>
+        <div class="ch-tip">💡 Zoom into the timeline waveform to find the exact start and end of each filler word.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="ch-header" style="background:var(--gold)">
+        <span class="ch-level">Intermediate</span>
+        <span class="ch-emoji">✏️</span>
+      </div>
+      <div class="ch-body">
+        <div class="ch-title">Build the Episode Open</div>
+        <div class="ch-task">Create a 15–30 second branded intro: (1) title card with episode name, (2) background music fade-in, (3) lower-third with the host's name.</div>
+        <div class="ch-tip">💡 Use Auto Captions on the host introduction for accessibility.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="ch-header" style="background:var(--red)">
+        <span class="ch-level">Advanced</span>
+        <span class="ch-emoji">🚀</span>
+      </div>
+      <div class="ch-body">
+        <div class="ch-title">Full Episode Edit</div>
+        <div class="ch-task">Edit a 3–5 minute podcast from raw footage: remove dead air, add B-roll over two jump cuts, balance audio levels, add episode title text, and export 1080p for YouTube.</div>
+        <div class="ch-tip">💡 Export 1080p MP4. Add YouTube chapter markers in the description for easy navigation.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     DISCUSSION QUESTIONS
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-discussion">
+  <div class="kicker">Practice</div>
+  <div class="screen-title">Discussion Questions</div>
+  <div class="screen-sub">Tap a card to reveal the full discussion prompt. No wrong answers.</div>
+
+  <div class="discuss-grid">
+    <div class="discuss-card" style="border-top-color:var(--cyan)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--cyan)">01</div>
+      <div class="dc-q">What makes a podcast feel professional vs. amateurish to you as a viewer?</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">Think about podcasts you've watched. What specific details made the difference? Name something visual and something audio.</div>
+    </div>
+    <div class="discuss-card" style="border-top-color:var(--gold)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--gold)">02</div>
+      <div class="dc-q">How do we balance quality and speed when editing under a Sunday deadline?</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">What's the minimum standard every episode must meet before going live? Who makes that call — and what's the process if it doesn't meet the standard?</div>
+    </div>
+    <div class="discuss-card" style="border-top-color:var(--red)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--red)">03</div>
+      <div class="dc-q">Which CapCut feature from today surprised you most?</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">How could you use it specifically for DWC's podcast? Be specific — name the feature, the episode type, and exactly where you'd apply it.</div>
+    </div>
+    <div class="discuss-card" style="border-top-color:var(--teal)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--teal)">04</div>
+      <div class="dc-q">What does our video podcast say about DWC to someone who's never visited?</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">Our content is our witness. What values — faith, excellence, warmth, clarity — should every episode communicate through its production quality?</div>
+    </div>
+    <div class="discuss-card" style="border-top-color:var(--gold)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--gold)">05</div>
+      <div class="dc-q">Name one bottleneck in our current editing process this training addresses.</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">Be specific — name the step, the problem, and the CapCut feature or technique that solves it. Walk the group through it.</div>
+    </div>
+    <div class="discuss-card" style="border-top-color:var(--cyan)" onclick="this.classList.toggle('open')">
+      <div class="dc-num" style="background:var(--cyan)">06</div>
+      <div class="dc-q">Bad audio, important content — what do you do?</div>
+      <div class="dc-hint">Tap to reveal prompt ›</div>
+      <div class="dc-sub">When do we fix it in post? When do we re-record? When do we release it anyway? Agree on a team policy for this scenario.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     4-WEEK PLAN
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-four-weeks">
+  <div class="kicker">Practice</div>
+  <div class="screen-title">4-Week Practice Plan</div>
+  <div class="screen-sub">One focused challenge per week. Share your edit in the team group before the next session.</div>
+
+  <div class="weeks-grid">
+    <div class="week-card">
+      <div class="wk-header" style="background:var(--cyan)"><div class="wk-label">Week 1</div></div>
+      <div class="wk-body">
+        <div class="wk-emoji">✂️</div>
+        <div class="wk-title">The Clean Cut</div>
+        <div class="wk-task">Take any raw conversation (5+ min). Remove all filler words and dead air. Export and share with the team.</div>
+        <div class="wk-goal" style="background:rgba(0,180,216,.1);color:var(--cyan)">🎯 Tight, natural dialogue. No dead moments.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="wk-header" style="background:var(--gold)"><div class="wk-label">Week 2</div></div>
+      <div class="wk-body">
+        <div class="wk-emoji">✏️</div>
+        <div class="wk-title">Branded Episode Open</div>
+        <div class="wk-task">Build a 20-second intro: church logo, episode title, host name lower-third, background music fade-in.</div>
+        <div class="wk-goal" style="background:rgba(232,134,42,.1);color:var(--gold)">🎯 A reusable template for every future episode.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="wk-header" style="background:var(--red)"><div class="wk-label">Week 3</div></div>
+      <div class="wk-body">
+        <div class="wk-emoji">🔊</div>
+        <div class="wk-title">Audio First</div>
+        <div class="wk-task">Edit a clip for audio: balance levels, reduce noise, duck music under speech, add a Scripture text overlay.</div>
+        <div class="wk-goal" style="background:rgba(183,28,52,.1);color:var(--red)">🎯 Every word audible. Music felt, not heard.</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div class="wk-header" style="background:var(--teal)"><div class="wk-label">Week 4</div></div>
+      <div class="wk-body">
+        <div class="wk-emoji">🚀</div>
+        <div class="wk-title">Full Episode Publish</div>
+        <div class="wk-task">Raw to published: clean audio, transitions, title cards, captions, exported and uploaded to YouTube.</div>
+        <div class="wk-goal" style="background:rgba(26,92,94,.1);color:var(--teal)">🎯 A real published episode for DWC's channel.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verse mt20">"Use whatever gift you've received to serve others." — 1 Peter 4:10</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SUMMARY / COMPLETE
+══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="final-hero">
+    <h1>Training <span>Complete.</span></h1>
+    <p>You've covered everything. Now go build something for the Kingdom.</p>
+  </div>
+
+  <div class="card mb14">
+    <div class="kicker" style="margin-bottom:10px">What You've Learned</div>
+    <div class="grid3" style="gap:10px">
+      <div style="background:var(--soft);border-radius:10px;padding:12px;border-left:3px solid var(--cyan)"><div style="font-weight:700;font-size:13px;margin-bottom:4px">📹 Module 01</div><div style="font-size:12px;color:var(--muted)">Interface · Timeline · Cuts · Transitions · Auto Captions</div></div>
+      <div style="background:var(--soft);border-radius:10px;padding:12px;border-left:3px solid var(--gold)"><div style="font-weight:700;font-size:13px;margin-bottom:4px">🎙️ Module 02</div><div style="font-size:12px;color:var(--muted)">Music · Volume · Voiceover · Noise Reduction · Beat Sync</div></div>
+      <div style="background:var(--soft);border-radius:10px;padding:12px;border-left:3px solid var(--red)"><div style="font-weight:700;font-size:13px;margin-bottom:4px">🚀 Module 03</div><div style="font-size:12px;color:var(--muted)">Export settings · Platform specs · Sharing best practices</div></div>
+    </div>
+  </div>
+
+  <div class="card mb14">
+    <div class="kicker" style="margin-bottom:10px">Your Commitment</div>
+    <ul class="commit-list">
+      <li>Save your CapCut project after every editing session</li>
+      <li>Share your weekly practice edit in the team group</li>
+      <li>Ask a team member to review your edit before publishing</li>
+      <li>Keep raw footage backed up separately at all times</li>
+    </ul>
+  </div>
+
+  <div class="card" style="background:var(--navy);border:none;text-align:center">
+    <p style="color:#9AA6BA;font-size:13px">Dominion World Center Media Team &nbsp;·&nbsp; Georgetown, Guyana &nbsp;·&nbsp; <a href="https://dominionwc.org" style="color:var(--gold2);text-decoration:none">dominionwc.org</a></p>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── Screen navigation ──────────────────────────────────
+let current = 'home';
+let visited = new Set(['home']);
+const total  = document.querySelectorAll('.screen').length;
+
+function show(id) {
+  const prev = document.getElementById('screen-' + current);
+  const next = document.getElementById('screen-' + id);
+  if (!next) return;
+  if (prev) prev.classList.remove('active');
+  next.classList.add('active');
+  current = id;
+  visited.add(id);
+  // Nav links
+  document.querySelectorAll('.nav-link').forEach(a => {
+    const fn = a.getAttribute('onclick') || '';
+    a.classList.toggle('active', fn.includes("'" + id + "'"));
+  });
+  // Global progress
+  document.getElementById('gProgress').style.width = (visited.size / total * 100) + '%';
+  window.scrollTo(0, 0);
+  closeNav();
+}
+
+// ── Accordion ──────────────────────────────────────────
+function toggleAcc(el) {
+  const body = el.querySelector('.acc-body');
+  const open = el.classList.contains('open');
+  el.classList.toggle('open', !open);
+  body.style.maxHeight = open ? '0' : body.scrollHeight + 'px';
+}
+
+// ── Generic reveal ─────────────────────────────────────
+function revealContent(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+
+// ── Mobile nav ─────────────────────────────────────────
+function toggleNav() {
+  document.getElementById('sidenav').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeNav() {
+  document.getElementById('sidenav').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>
