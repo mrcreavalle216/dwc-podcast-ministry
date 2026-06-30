@@ -376,6 +376,10 @@
   .vmodal-frame{position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;background:#000;box-shadow:var(--shadow-lg);}
   .vmodal-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
   .vmodal-title{color:#fff;font-family:var(--ui);font-weight:700;font-size:14px;margin-top:12px;text-align:center;}
+  .vmodal-yt{display:block;width:fit-content;margin:12px auto 0;color:#fff;background:var(--grad-accent);
+    font-family:var(--ui);font-weight:800;font-size:13px;letter-spacing:.03em;padding:11px 20px;border-radius:30px;
+    text-decoration:none;box-shadow:0 6px 18px rgba(232,134,42,.4);}
+  .vmodal-hint{color:rgba(255,255,255,.7);font-family:var(--ui);font-size:11.5px;text-align:center;margin-top:8px;}
   .vmodal-close{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);
     color:#fff;border:none;font-size:15px;cursor:pointer;z-index:3;}
   .vmodal-close:active{transform:scale(.92);}
@@ -797,6 +801,8 @@
     <button class="vmodal-close" data-close aria-label="Close video">✕</button>
     <div class="vmodal-frame"><iframe id="videoFrame" title="Tutorial video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
     <div class="vmodal-title" id="videoTitle"></div>
+    <a class="vmodal-yt" id="videoYT" target="_blank" rel="noopener">▶ Watch on YouTube ↗</a>
+    <div class="vmodal-hint">If the video won't play here, tap "Watch on YouTube" — some videos block in-app playback.</div>
   </div>
 </div>
 
@@ -856,7 +862,7 @@
     {ic:"w-promo",t:"8 · Promotion",d:"Post clips, share, engage with grace."}
   ];
   var gear=[
-    {ic:"g-fx30",n:"Sony FX30",one:"Main camera",video:"https://www.youtube.com/watch?v=8MaX-3lUrO0",tips:["Charged battery + cleared card","Lock focus on the eyes","Confirm the red timer is running","Don't let the card fill mid-session"]},
+    {ic:"g-fx30",n:"Sony FX30",one:"Main camera",video:"https://www.youtube.com/watch?v=b2SDQcZ8Qys",tips:["Charged battery + cleared card","Lock focus on the eyes","Confirm the red timer is running","Don't let the card fill mid-session"]},
     {ic:"g-pocket",n:"DJI Pocket 3",one:"Second angle",video:"https://www.youtube.com/watch?v=HWSiNbn-tU4",tips:["Use a DIFFERENT angle than the FX30","Great for smooth B-roll","Tiny battery drains fast — watch it","Keep it on its mini-tripod"]},
     {ic:"g-mixer",n:"RØDECaster Duo",one:"Audio brain",video:"https://www.youtube.com/watch?v=CMqGtgZFANU",tips:["Both SM7Bs plug in here via XLR","Record on the unit AND in Ecamm","Keep levels out of the red","Monitor on headphones always"]},
     {ic:"g-mic",n:"Shure SM7B ×2",one:"The microphones",video:"https://www.youtube.com/watch?v=q9kvAvz4kmQ",tips:["Stay 3–4 inches away (a fist)","Talk across the front, not the side","Use the foam windscreen","Coach guests to stay close"]},
@@ -952,7 +958,7 @@
     if(list) src+="&list="+list;
     return src;
   }
-  function openVideo(url,title){ if(!vModal)return; vFrame.src=ytEmbed(url); vTitle.textContent=title||""; vModal.classList.add("open"); vModal.setAttribute("aria-hidden","false"); }
+  function openVideo(url,title){ if(!vModal)return; vFrame.src=ytEmbed(url); vTitle.textContent=title||""; var yt=document.getElementById("videoYT"); if(yt) yt.href=url; vModal.classList.add("open"); vModal.setAttribute("aria-hidden","false"); }
   function closeVideo(){ if(!vModal)return; vModal.classList.remove("open"); vModal.setAttribute("aria-hidden","true"); vFrame.src=""; }
   if(vModal){
     $$("[data-close]",vModal).forEach(function(el){el.addEventListener("click",closeVideo);});
